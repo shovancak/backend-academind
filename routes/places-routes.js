@@ -1,5 +1,7 @@
 const express = require("express");
 
+const HttpError = require("../models/http-error");
+
 const router = express.Router();
 
 const DUMMY_PLACES = [
@@ -22,9 +24,7 @@ router.get("/:pid", (req, res, next) => {
     return placeInDummyPlaces.id === placeId;
   });
   if (!place) {
-    const error = new Error("Place with provided ID does not exist.");
-    error.code = 404;
-    throw error;
+    throw new HttpError("Place with provided ID does not exist.", 404);
   }
   res.json({ place: place });
 });
@@ -35,9 +35,7 @@ router.get("/user/:uid", (req, res, next) => {
     return placeInDummyPlaces.creator === userId;
   });
   if (!place) {
-    const error = new Error("User with provided ID does not exist.");
-    error.code = 404;
-    return next(error);
+    return next(new HttpError("User with provided ID does not exist.", 404));
   }
   res.json({ place: place });
 });
