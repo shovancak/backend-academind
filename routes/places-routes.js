@@ -22,9 +22,9 @@ router.get("/:pid", (req, res, next) => {
     return placeInDummyPlaces.id === placeId;
   });
   if (!place) {
-    return res
-      .status(404)
-      .json({ message: "Place with provided ID does not exist." });
+    const error = new Error("Place with provided ID does not exist.");
+    error.code = 404;
+    throw error;
   }
   res.json({ place: place });
 });
@@ -35,9 +35,9 @@ router.get("/user/:uid", (req, res, next) => {
     return placeInDummyPlaces.creator === userId;
   });
   if (!place) {
-    return res
-      .status(404)
-      .json({ message: "User with provided ID does not exist." });
+    const error = new Error("User with provided ID does not exist.");
+    error.code = 404;
+    return next(error);
   }
   res.json({ place: place });
 });
