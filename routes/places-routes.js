@@ -21,6 +21,11 @@ router.get("/:pid", (req, res, next) => {
   const place = DUMMY_PLACES.find((placeInDummyPlaces) => {
     return placeInDummyPlaces.id === placeId;
   });
+  if (!place) {
+    return res
+      .status(404)
+      .json({ message: "Place with provided ID does not exist." });
+  }
   res.json({ place: place });
 });
 
@@ -29,6 +34,11 @@ router.get("/user/:uid", (req, res, next) => {
   const place = DUMMY_PLACES.find((placeInDummyPlaces) => {
     return placeInDummyPlaces.creator === userId;
   });
+  if (!place) {
+    return res
+      .status(404)
+      .json({ message: "User with provided ID does not exist." });
+  }
   res.json({ place: place });
 });
 
