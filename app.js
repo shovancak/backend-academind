@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
+const usersRouters = require("./routes/users-routes");
 const placesRoutes = require("./routes/places-routes");
 
 const HttpError = require("./models/http-error");
@@ -9,6 +10,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use("/api/users", usersRouters);
 app.use("/api/places", placesRoutes);
 
 app.use((req, res, next) => {
@@ -27,3 +29,4 @@ app.use((error, req, res, nest) => {
 });
 
 app.listen(5000);
+console.log("Server is running.");
