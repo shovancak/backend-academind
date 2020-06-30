@@ -8,19 +8,19 @@ const getCoordsForAddress = require("../utilities/location");
 
 const Place = require("../models/place");
 
-let DUMMY_PLACES = [
-  {
-    id: "p1",
-    title: "Empire State Building",
-    description: "One of the most famous sky scrapers in the World",
-    location: {
-      lat: 40.74844474,
-      lng: -73.9871516,
-    },
-    address: "20 W 34th St, New York, NY 10001",
-    creator: "u1",
-  },
-];
+// let DUMMY_PLACES = [
+//   {
+//     id: "p1",
+//     title: "Empire State Building",
+//     description: "One of the most famous sky scrapers in the World",
+//     location: {
+//       lat: 40.74844474,
+//       lng: -73.9871516,
+//     },
+//     address: "20 W 34th St, New York, NY 10001",
+//     creator: "u1",
+//   },
+// ];
 
 const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
@@ -150,14 +150,30 @@ const updatePlace = async (req, res, next) => {
   res.status(200).json({ place: place.toObject({ getters: true }) });
 };
 
-const deletePlace = (req, res, next) => {
+const deletePlace = async (req, res, next) => {
   const placeId = req.params.pid;
-  if (!DUMMY_PLACES.find((place) => place.id === placeId)) {
-    throw new HttpError("Place for provided ID can not be found.", 404);
+
+  let place;
+  try {
+    place = await Place.findById(placeId);
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not delete place",
+      500
+    );
+    return next(error);
   }
-  DUMMY_PLACES = DUMMY_PLACES.filter((placeInDummyPlaces) => {
-    return placeInDummyPlaces.id !== placeId;
-  });
+
+  try {
+    await place.remove();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not delete place",
+      500
+    );
+    return next(error);
+  }
+
   res.status(200).json({ message: "Place deleted." });
 };
 
