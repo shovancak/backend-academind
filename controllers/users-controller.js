@@ -5,17 +5,20 @@ const HttpError = require("../models/http-error");
 
 const User = require("../models/user");
 
-const DUMMY_USERS = [
-  {
-    id: "u1",
-    name: "Samuel Hovancak",
-    email: "samuel@test.com",
-    password: "testtest",
-  },
-];
-
-const getAllUsers = (req, res, next) => {
-  res.status(200).json({ users: DUMMY_USERS });
+const getAllUsers = async (req, res, next) => {
+  let users;
+  try {
+    users = await User.find({}, "-password"); // can be await User.find({}, "email name")
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not fetch users, please try again later",
+      500
+    );
+    return next(error);
+  }
+  res
+    .status(200)
+    .json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
 const createNewUser = async (req, res, next) => {
