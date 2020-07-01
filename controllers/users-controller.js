@@ -30,7 +30,7 @@ const createNewUser = async (req, res, next) => {
 
   let existingUser;
   try {
-    existingUser = await User.findOne({ emial: email });
+    existingUser = await User.findOne({ email: email });
   } catch (err) {
     const error = new HttpError(
       "Signing up failed, please try again later",
@@ -65,17 +65,20 @@ const createNewUser = async (req, res, next) => {
   res.status(201).json({ user: createdUser.toObject({ getters: true }) });
 };
 
-const loginUser = (req, res, next) => {
+const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
-  const identifiedUser = DUMMY_USERS.find((user) => {
-    return user.email === email;
-  });
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email: email });
+  } catch (err) {
+    const error = new HttpError("Logging in failed, please try again.", 500);
+    return next(error);
+  }
 
-  if (!identifiedUser || identifiedUser.password !== password) {
-    return next(
-      new HttpError("User with provided credentials does not exist.", 401)
-    );
+  if (!existingUser || existingUser.password !== password) {
+    const error = new HttpError("Invalid credentials, please try again.", 401);
+    return next(error);
   }
 
   res.status(200).json({ message: "Logged in!" });
