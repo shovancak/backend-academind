@@ -39,7 +39,7 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://samuel:83461834Sh@cluster0-eamri.mongodb.net/mern-academind?retryWrites=true&w=majority"
+    `mongodb+srv://samuel:83461834Sh@cluster0-eamri.mongodb.net/mern-academind?retryWrites=true&w=majority`
   )
   .then(() => {
     app.listen(5000);
@@ -47,5 +47,3 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-
-console.log("Server is running.");
