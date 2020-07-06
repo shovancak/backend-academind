@@ -8,10 +8,10 @@ const placeSchema = new Schema({
   image: { type: String, required: true },
   address: { type: String, required: true },
   location: {
-    lat: { type: Number, require: true },
-    lng: { type: Number, require: true },
+    lat: { type: Number, required: true },
+    lng: { type: Number, required: true },
   },
-  creator: { type: mongoose.Types.ObjectId, require: true, ref: "User" },
+  creator: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
 });
 
 module.exports = mongoose.model("Place", placeSchema);

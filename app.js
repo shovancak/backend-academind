@@ -2,9 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const usersRouters = require("./routes/users-routes");
 const placesRoutes = require("./routes/places-routes");
-
+const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./models/http-error");
 
 const app = express();
@@ -18,25 +17,24 @@ app.use((req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+
   next();
 });
 
-app.use("/api/users", usersRouters);
 app.use("/api/places", placesRoutes);
+app.use("/api/users", usersRoutes);
 
 app.use((req, res, next) => {
-  const error = new HttpError("This page does not exist.", 404);
+  const error = new HttpError("Could not find this route.", 404);
   throw error;
 });
 
-// error handling function
-app.use((error, req, res, nest) => {
+app.use((error, req, res, next) => {
   if (res.headerSent) {
     return next(error);
   }
-  res
-    .status(error.code || 500)
-    .json({ message: error.message || "An unknown error occurred." });
+  res.status(error.code || 500);
+  res.json({ message: error.message || "An unknown error occurred!" });
 });
 
 mongoose

@@ -15,13 +15,14 @@ const getCoordsForAddress = async (address) => {
 
   if (!data || data.status === "ZERO_RESULTS") {
     const error = new HttpError(
-      "Location with provided address colud not be found.",
+      "Could not find location for the specified address.",
       422
     );
     throw error;
   }
 
   const coordinates = data.results[0].geometry.location;
+
   return coordinates;
 };
 
