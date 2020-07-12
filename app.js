@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+//AIzaSyA9gCSilKD19Az6aoz9DlasYYE9GgY9O_I
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -49,7 +50,7 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    `mongodb+srv://samuel:83461834Sh@cluster0-eamri.mongodb.net/mern-academind?retryWrites=true&w=majority`
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-eamri.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
   )
   .then(() => {
     app.listen(5000);
