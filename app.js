@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-//AIzaSyA9gCSilKD19Az6aoz9DlasYYE9GgY9O_I
 
 const express = require("express");
 const bodyParser = require("body-parser");
