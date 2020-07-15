@@ -1,0 +1,9 @@
+{
+  "env": {
+    "DB_USER": "samuel",
+    "DB_PASSWORD": "83461834Sh",
+    "DB_NAME": "mern-academind",
+    "GOOGLE_API_KEY": "AIzaSyA9gCSilKD19Az6aoz9DlasYYE9GgY9O_I",
+    "JWT_KEY": "supersecret_dont_share"
+  }
+}
